@@ -362,6 +362,7 @@ legend {
 }
 
 input[type="email"],
+input[type="text"],
 textarea {
     width: 100%;
     box-sizing: border-box;
