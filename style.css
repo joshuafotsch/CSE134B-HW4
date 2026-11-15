@@ -397,10 +397,10 @@ input:user-invalid,
 select:user-invalid,
 textarea:user-invalid {
     border: 2px solid #d32f2f;
+    border-style: dashed;
 }
 
-form p {
-    text-align: end;
-    margin: 1px;
-
+#form-instructions {
+    text-align: start;
+    margin: 0;
 }

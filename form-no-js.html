@@ -44,20 +44,29 @@
 
   <main>
     <h1>Contact Form</h1>
+
     <form action="https://httpbin.org/post" method="post">
-      <label for="name">Name*</label>
-      <input type="text" name="name" id="name" autocomplete="name" required minlength="1" maxlength="100">
 
-      <label for="email">Email*</label>
-      <input type="email" name="email" id="email" autocomplete="email" required>
+      <fieldset>
+        <legend>Rate the Form!</legend>
+        <p id="form-instructions">
+          Fields marked with * are <strong>required</strong>. <br>
+          Comments: 5 - 1,000 characters (a short message is fine).
+        </p>
 
-      <label for="comments">Additional Comments*</label>
-      <textarea name="comments" id="comments" required minlength="5" maxlength="1000"></textarea>
+        <label for="name">Name*</label>
+        <input type="text" name="name" id="name" autocomplete="name" required minlength="1" maxlength="100">
 
-      <input type="hidden" name="possible_bot" value="true">
-      <p><strong>*required</strong></p>
+        <label for="email">Email*</label>
+        <input type="email" name="email" id="email" autocomplete="email" required>
 
-      <button type="submit">Submit</button>
+        <label for="comments">Additional Comments*</label>
+        <textarea name="comments" id="comments" required minlength="5" maxlength="1000"></textarea>
+
+        <input type="hidden" name="possible_bot" value="true">
+
+        <button type="submit">Submit</button>
+      </fieldset>
 
 
     </form>
