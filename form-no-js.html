@@ -45,17 +45,20 @@
   <main>
     <h1>Contact Form</h1>
     <form action="https://httpbin.org/post" method="post">
-      <label for="name">Name</label>
-      <input type="text" name="name" id="name" autocomplete="name">
+      <label for="name">Name*</label>
+      <input type="text" name="name" id="name" autocomplete="name" required minlength="1" maxlength="100">
 
-      <label for="email">Email</label>
-      <input type="email" name="email" id="email" autocomplete="email">
+      <label for="email">Email*</label>
+      <input type="email" name="email" id="email" autocomplete="email" required>
 
-      <label for="comments">Additional Comments</label>
-      <textarea name="comments" id="comments"></textarea>
+      <label for="comments">Additional Comments*</label>
+      <textarea name="comments" id="comments" required minlength="5" maxlength="1000"></textarea>
 
       <input type="hidden" name="possible_bot" value="true">
+      <p><strong>*required</strong></p>
+
       <button type="submit">Submit</button>
+
 
     </form>
   </main>

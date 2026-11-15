@@ -385,3 +385,22 @@ textarea:focus-visible {
 }
 
 /* EXPERIMENTS (experiments.html) */
+
+/* Form No JS */
+input:user-valid,
+select:user-valid,
+textarea:user-valid {
+    border: 2px solid #2e7d32;
+}
+
+input:user-invalid,
+select:user-invalid,
+textarea:user-invalid {
+    border: 2px solid #d32f2f;
+}
+
+form p {
+    text-align: end;
+    margin: 1px;
+
+}
