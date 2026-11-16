@@ -3,25 +3,30 @@ const nameField = document.querySelector("#name");
 const emailField = document.querySelector("#email");
 const commentField = document.querySelector("#comments");
 
-const submitButton = document.querySelector("#form-submit");
 const formElement = document.querySelector("form");
+const formErrorsField = document.querySelector('input[name="form-errors"]');
+
+// Error history: one entry per invalid field per failed submit attempt
+const form_errors = [];
 
 // Helper functions
 function validateEmail(element) {
+  if (!element.validity.typeMismatch) return "";
   let errorString = "";
-  let numOfAts = element.value.split("@").length - 1;
+
+  const splitEmail = element.value.split("@");
+  const numOfAts = splitEmail.length - 1;
   if (numOfAts === 0) {
     errorString += `- @ symbol missing\n`;
   } else if (numOfAts > 1) {
-    errorString += `- @ symbol occurs more than once\n`;
+    return (errorString += `- @ symbol occurs more than once\n`);
   }
 
-  let numOfPeriods = element.value.split(".").length - 1;
-  if (numOfPeriods === 0) {
-    errorString += "- Domain missing. eg: .com, .net, etc..";
+  if (splitEmail[numOfAts] === "") {
+    errorString += "- Domain missing. eg: gmail.com, verizon.net, etc...\n";
   }
 
-  if (!errorString && !element.validity.valid) {
+  if (!errorString) {
     errorString = "- Enter an email like name@example.com\n";
   }
 
@@ -31,17 +36,10 @@ function validateEmail(element) {
 function validateLength(element) {
   let errorString = "";
 
-  if (element.value.length < element.minLength) {
+  if (element.validity.tooShort) {
     errorString += `- At least ${element.minLength} characters\n`;
-  } else if (element.validity.tooLong === true) {
-    errorString += `- ${element.value.length - element.maxLength} too many chars\n`;
   }
   return errorString;
-}
-
-function getCharsRemaining(element) {
-  const maxChars = element.maxLength;
-  return maxChars - element.value.length;
 }
 
 // Gets error message based off of validity
@@ -61,8 +59,6 @@ function getErrorMessage(element) {
 
 // populates the error elements on screen
 function displayValidate(element) {
-  // console.log(element.checkValidity());
-  // console.log(element.validity);
   element.setCustomValidity("");
   let errorElement = document.querySelector(`#${element.id}-error`);
   const errorMessage = getErrorMessage(element);
@@ -72,7 +68,7 @@ function displayValidate(element) {
     errorElement.textContent = errorMessage;
     element.setCustomValidity(errorMessage);
   } else {
-    errorElement.setAttribute("hidden", "");
+    errorElement.textContent = "";
   }
 }
 
@@ -84,21 +80,42 @@ function toggleCharsRemaining(element, isShown) {
 
   if (!isShown) return;
 
-  let charCount = getCharsRemaining(element);
-  let displayString = `${getCharsRemaining(element)} chars remaining`;
+  let charCount = element.maxLength - element.value.length;
+  let displayString = `${charCount} Characters remaining`;
   if (charCount <= 0.1 * element.maxLength) {
     elementInfo.classList.add("low");
+    displayString = "Only " + displayString + "!";
   }
-  if (charCount == 0) {
-    displayString = "No More Characters";
+  if (charCount === 0) {
+    displayString = "Out of Characters";
   }
 
   elementInfo.textContent = displayString;
   elementInfo.removeAttribute("hidden");
 }
 
-// Logger
-function logInvalidAttempts() {}
+// Logger: records which field failed and why (never the user's input)
+function logInvalidAttempts(element) {
+  // displayValidate may have just cleared a stale custom error
+  if (element.validity.valid) return;
+
+  let error = "unknown";
+  if (element.validity.valueMissing) {
+    error = "valueMissing";
+  } else if (element.validity.typeMismatch) {
+    error = "typeMismatch";
+  } else if (element.validity.tooShort) {
+    error = "tooShort";
+  } else if (element.validity.customError) {
+    error = element.validationMessage; // our own message, no user data
+  }
+
+  form_errors.push({
+    field: element.name,
+    error: error,
+    time: new Date().toISOString(),
+  });
+}
 
 // Event Handlers
 nameField.addEventListener("focusin", function () {
@@ -125,7 +142,6 @@ commentField.addEventListener("input", function () {
 
   // if error showing check if fixed
   const errorElement = document.querySelector(`#${this.id}-error`);
-  console.log(errorElement);
   if (errorElement.textContent) {
     displayValidate(this);
   }
@@ -154,10 +170,12 @@ formElement.addEventListener(
   "invalid",
   (e) => {
     displayValidate(e.target); // show the error on the page
-    form_errors.push({
-      field: e.target.name,
-      error: e.target.validationMessage,
-    });
+    logInvalidAttempts(e.target); // record it in the history
   },
-  true,
+  true, // capture: invalid doesn't bubble
 );
+
+// Only fires once every field is valid, right before the POST
+formElement.addEventListener("submit", () => {
+  formErrorsField.value = JSON.stringify(form_errors);
+});
