@@ -69,7 +69,22 @@
 
     button.addEventListener("click", function () {
       currentTheme = currentTheme === "dark" ? "light" : "dark";
-      applyTheme(currentTheme); // apply first, so it works even if saving fails
+
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      // apply first, so it works even if saving fails
+      if (document.startViewTransition && !reduceMotion) {
+        // View Transition API: cross-fade from the old theme to the new one
+        document.startViewTransition(function () {
+          applyTheme(currentTheme);
+        });
+      } else {
+        // No API support or reduced motion requested, switch instantly
+        applyTheme(currentTheme);
+      }
+
       saveTheme(currentTheme);
     });
 

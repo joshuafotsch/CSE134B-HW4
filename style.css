@@ -67,6 +67,19 @@
     margin-inline-start: auto;
 }
 
+/* Transitions */
+@view-transition {
+    navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+        animation: none !important;
+    }
+}
 
 /* Global Styles:*/
 body {
