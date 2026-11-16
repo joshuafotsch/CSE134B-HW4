@@ -19,6 +19,16 @@
     --color-border: var(--Royal-Purple);
     --color-button-background: var(--Light-Green);
     --color-card-background: var(--Lime-Green);
+    --color-accent: var(--Deep-Slate-Purple);
+    --color-on-accent: var(--Light-Green);
+    --color-hover: var(--Royal-Purple);
+    --color-focus: var(--Deep-Slate-Purple);
+    --color-input-background: #ffffff;
+    --color-valid: #2e7d32;
+    --color-invalid: #d32f2f;
+    --color-error: red;
+
+    color-scheme: light;
 
     /* Font */
     --font-family: Arial, Helvetica, sans-serif;
@@ -27,6 +37,34 @@
     --content-width: 60rem;
     --space: 1rem;
     --border: 2px solid var(--color-border);
+}
+
+/* Dark theme: turned on by theme.js setting data-theme="dark" on <html>.
+   Without JS defaults to light */
+:root[data-theme="dark"] {
+    --color-background: #1e1a2e;
+    --color-nav: #2b2350;
+    --color-text: #e6f4ea;
+    --color-link: #ffb37a;
+    --color-link-visited: #ffb37a;
+    --color-border: #b79cff;
+    --color-button-background: #3a3066;
+    --color-card-background: #2b2350;
+    --color-accent: #c9b6ff;
+    --color-on-accent: #1e1a2e;
+    --color-hover: #a98bff;
+    --color-focus: #ffd27a;
+    --color-input-background: #14111f;
+    --color-valid: #81c784;
+    --color-invalid: #ff8a80;
+    --color-error: #ff8a80;
+
+    color-scheme: dark;
+}
+
+/* Theme toggle (created by theme.js, so it never appears without JS) */
+#theme-toggle {
+    margin-inline-start: auto;
 }
 
 
@@ -137,20 +175,20 @@ footer a:visited {
 
 nav a:hover,
 footer a:hover {
-    background-color: var(--Royal-Purple);
-    color: var(--color-button-background);
+    background-color: var(--color-hover);
+    color: var(--color-on-accent);
 }
 
 nav a:focus-visible,
 footer a:focus-visible {
-    outline: 3px solid var(--Deep-Slate-Purple);
+    outline: 3px solid var(--color-focus);
     outline-offset: 3px;
 }
 
 /* Current page nav link */
 nav a[aria-current="page"] {
-    background-color: var(--Deep-Slate-Purple);
-    color: var(--color-button-background);
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
 }
 
 /* Card box: home and experiments sections, each project in the list */
@@ -175,19 +213,19 @@ button {
     padding: 0.5em 1.5em;
     font: inherit;
     font-weight: bold;
-    color: var(--color-button-background);
-    background-color: var(--Deep-Slate-Purple);
+    color: var(--color-on-accent);
+    background-color: var(--color-accent);
     border: var(--border);
     border-radius: 999px;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: var(--Royal-Purple);
+    background-color: var(--color-hover);
 }
 
 button:focus-visible {
-    outline: 3px solid var(--Deep-Slate-Purple);
+    outline: 3px solid var(--color-focus);
     outline-offset: 3px;
 }
 
@@ -202,6 +240,10 @@ button:focus-visible {
     nav ul,
     footer ul {
         gap: calc(var(--space) * 0.5);
+    }
+
+    #theme-toggle {
+        margin-inline-start: 0;
     }
 }
 
@@ -312,7 +354,7 @@ project-card>img {
 .page-about progress {
     width: 100%;
     height: 1.25rem;
-    accent-color: var(--Royal-Purple);
+    accent-color: var(--color-hover);
 }
 
 .page-about ol {
@@ -325,7 +367,7 @@ project-card>img {
 }
 
 .page-about ol li::marker {
-    color: var(--Royal-Purple);
+    color: var(--color-border);
     font-weight: bold;
 }
 
@@ -369,6 +411,7 @@ textarea {
     padding: 0.5em 0.75em;
     font: inherit;
     color: var(--color-text);
+    background-color: var(--color-input-background);
     border: var(--border);
     border-radius: 0.5rem;
 }
@@ -380,7 +423,7 @@ form button {
 
 input:focus-visible,
 textarea:focus-visible {
-    outline: 3px solid var(--Deep-Slate-Purple);
+    outline: 3px solid var(--color-focus);
     outline-offset: 3px;
 }
 
@@ -390,13 +433,13 @@ textarea:focus-visible {
 input:user-valid,
 select:user-valid,
 textarea:user-valid {
-    border: 2px solid #2e7d32;
+    border: 2px solid var(--color-valid);
 }
 
 input:user-invalid,
 select:user-invalid,
 textarea:user-invalid {
-    border: 2px solid #d32f2f;
+    border: 2px solid var(--color-invalid);
     border-style: dashed;
 }
 
@@ -406,7 +449,7 @@ textarea:user-invalid {
 }
 
 .error {
-    color: red;
+    color: var(--color-error);
     margin: 0;
     white-space: pre-line;
 }
@@ -426,5 +469,5 @@ textarea:user-invalid {
 }
 
 .char-limit.low {
-    color: red
+    color: var(--color-error);
 }
