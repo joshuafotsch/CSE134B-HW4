@@ -404,3 +404,27 @@ textarea:user-invalid {
     text-align: start;
     margin: 0;
 }
+
+.error {
+    color: red;
+    margin: 0;
+    white-space: pre-line;
+}
+
+#name-info,
+#email-info,
+#comments-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    margin: 0;
+}
+
+.char-limit {
+    margin: 0;
+}
+
+.char-limit.low {
+    color: red
+}
